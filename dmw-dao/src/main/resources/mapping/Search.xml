@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.SearchMapper">
+
+    <select id="queryItemList" resultType="com.szxs.vo.SearchItemListVo">
+        select id,abstractMessage,itemName,UNIX_TIMESTAMP(startTime) as startTimeLong,UNIX_TIMESTAMP(endTime) as endTimeLong,minPrice,maxPrice,latitude,longitude,itemType1Id as itemTypeId1,itemType2Id as itemTypeId2,UNIX_TIMESTAMP(createdTime) as createdTimeLong,commentCount,
+               (select areaId from dm_item.dm_cinema c where i.cinemaId = c.id) areaId,
+               (select address from dm_item.dm_cinema c where i.cinemaId = c.id) address,
+               (select areaName from dm_item.dm_cinema c where i.cinemaId = c.id) areaName,
+               (select imgUrl from dm_base.dm_image m where i.cinemaId = m.id) imgUrl
+        from dm_item.dm_item i
+        <where>
+            <if test="offsetTime != null and offsetTime != ''">
+                and createdTime > #{offsetTime}
+            </if>
+        </where>
+    </select>
+</mapper>

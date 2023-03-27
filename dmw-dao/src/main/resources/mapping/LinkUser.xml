@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.LinkUserMapper">
+
+    <insert id="addLinkUser">
+        INSERT INTO dm_link_user(cardType,idCard,name,userId)
+        VALUES (#{cardType},#{idCard},#{name},#{userId})
+    </insert>
+
+    <delete id="deleteLinkUserById">
+        delete from dm_link_userr
+        <where>
+            <if test="id > 0">
+                and id = #{id}
+            </if>
+        </where>
+    </delete>
+
+    <select id="queryLinkUserByIdCard" resultType="com.szxs.entity.DmLinkUser">
+        select id,userId,name,idCard,cardType
+        from dm_link_user
+        <where>
+            <if test="idCard != null and idCard != ''">
+                and idCard = #{idCard}
+            </if>
+        </where>
+    </select>
+    
+    <select id="queryLinkUser" resultType="com.szxs.vo.LinkUserVo">
+        select id,name,idCard,cardType,userId
+        from dm_link_user
+        <where>
+            <if test="userId != null">
+                and userId = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="getLinkUser" resultType="com.szxs.entity.DmLinkUser">
+        select id,userId,name,idCard,cardType,createdTime,updatedTime
+        from dm_link_user
+        <where>
+            <if test="id > 0 and id != ''">
+                and id =#{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

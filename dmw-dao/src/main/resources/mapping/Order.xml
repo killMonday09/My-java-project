@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.OrderMapper">
+
+
+
+    <update id="updateOrderType">
+        update dm_order
+        <set>
+            <if test="orderType != null">
+                orderType = #{orderType}
+            </if>
+        </set>
+        where orderNo = #{orderNo}
+    </update>
+
+    <select id="queryOrderByOrder" resultType="DmOrder">
+        select id,itemName,orderType,totalAmount,totalCount,itemId
+        from dm_order
+        where orderNo = #{orderNo}
+    </select>
+
+    <insert id="saveOrder" keyProperty="id" useGeneratedKeys="true">
+        insert into dm_order
+        values (default ,#{orderNo},#{userId},#{schedulerId},#{itemId},#{itemName},#{wxTradeNo},#{aliTradeNo},#{orderType},#{payType},#{totalCount},#{area},#{sourceType},#{isNeedInvoice},#{invoiceType},#{invoiceHead},#{invoiceNo},#{isNeedInsurance},#{totalAmount},#{insuranceAmount},#{createdTime},#{updatedTime})
+    </insert>
+    <insert id="addOrderLinkUser">
+        insert into dm_order_link_user(id,orderId,linkUserId,linkUserName,x,y,price,createdTime)
+        values (default ,#{orderId},#{linkUserId},#{linkUserName},#{x},#{y},#{price},#{createdTime})
+    </insert>
+
+    <update id="updateOrder" keyProperty="id" useGeneratedKeys="true">
+        update dm_order
+        <set>
+            <if test="orderNo != null and orderNo != ''">
+                orderNo = #{orderNo}
+            </if>
+            <if test="userId > 0 and userId != ''">
+                userId = #{userId}
+            </if>
+            <if test="schedulerId > 0 and schedulerId != ''">
+                schedulerId = #{schedulerId}
+            </if>
+        </set>
+        <where>
+            <if test="id >0 and id != ''">
+                and id = #{id}
+            </if>
+        </where>
+    </update>
+
+
+    <update id="updateSeatNum">
+        update dm_scheduler.dm_scheduler_seat_price
+        <set>
+            <if test="seatNum > 0">
+            seatNum = seatNum - #{seatNum}
+            </if>
+        </set>
+        where areaLevel = #{areaLevel} and scheduleId = #{scheduleId}
+    </update>
+
+    <update id="updateAddSeatNum">
+        update dm_scheduler.dm_scheduler_seat_price
+        <set>
+            <if test="seatNum > 0">
+                seatNum = seatNum + #{seatNum}
+            </if>
+        </set>
+        where areaLevel = #{areaLevel} and scheduleId = #{scheduleId}
+    </update>
+
+    <update id="updateSeatStatus">
+        update dm_scheduler.dm_scheduler_seat
+        set status = 1
+        <where>
+            <if test="orderNo != null">
+                and orderNo = #{orderNo}
+            </if>
+            <if test="scheduleId != null">
+                and scheduleId = #{scheduleId}
+            </if>
+        </where>
+    </update>
+
+    <select id="queryOrderByOrderNo" resultType="com.szxs.vo.OrderByOrderNoVo">
+        select id,itemName,orderNo,totalCount as seatCount,totalAmount
+        from dm_order.dm_order
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                and orderNo = #{orderNo}
+            </if>
+        </where>
+
+    </select>
+    <select id="queryOrderState" resultType="com.szxs.vo.OrderStateVo">
+        select orderNo,orderType
+        from dm_order.dm_order
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                and orderNo = #{orderNo}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryOrderList" resultType="com.szxs.vo.OrderListVo">
+        select id,orderNo,userId,schedulerId,itemId,itemName,orderType,
+               totalCount as num,totalAmount,createdTime as sellTime
+        from dm_order.dm_order
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and itemName like concat('%',#{keyword},'%')
+                or orderNo like concat('%',#{keyword},'%')
+            </if>
+            <if test="orderTime == 2">
+                and createdTime > DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+            </if>
+            <if test="orderTime == 1">
+                and createdTime > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+            </if>
+            <if test="userId > 0">
+                and userId = #{userId}
+            </if>
+            <if test="orderType > -2">
+                and orderType = #{orderType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

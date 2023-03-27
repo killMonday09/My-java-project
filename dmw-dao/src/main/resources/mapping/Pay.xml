@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.PayMapper">
+
+    <insert id="savePay">
+        insert into dm_trade(id,orderNo,tradeNo,payMethod,amount,createdTime)
+        values (#{id},#{orderNo},#{tradeNo},#{payMethod},#{amount},#{createdTime})
+    </insert>
+
+    <update id="updateOrderType">
+        update dm_order.dm_order
+        <set>
+            <if test="orderType > 0">
+                orderType = #{orderType},
+            </if>
+            <if test="aliTradeNo != null">
+                aliTradeNo = #{aliTradeNo},
+            </if>
+            <if test="updatedTime != null ">
+                updatedTime = #{updatedTime},
+            </if>
+        </set>
+        where orderNo = #{orderNo}
+    </update>
+    <update id="updateSeatStatus">
+        update dm_scheduler.dm_scheduler_seat
+        <set>
+            <if test="status > 0 ">
+                status = #{status},
+            </if>
+            <if test="updatedTime != null ">
+                updatedTime = #{updatedTime},
+            </if>
+        </set>
+        where orderNo = #{orderNo}
+    </update>
+
+    <select id="queryPayOrderNo" resultType="com.szxs.vo.PayOrderNoVo">
+        select id,orderNo,userId,schedulerId,itemId,itemName,wxTradeNo,aliTradeNo,orderType,payType,totalCount,sourceType,isNeedInvoice,invoiceType,invoiceHead,invoiceNo,isNeedInsurance,totalAmount,insuranceAmount,createdTime,updatedTime
+        from dm_order.dm_order
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                and orderNo = #{orderNo}
+            </if>
+        </where>
+    </select>
+    <select id="queryOrder" resultType="com.szxs.entity.DmOrder">
+        select id,orderNo,aliTradeNo,totalAmount,createdTime,updatedTime
+        from dm_order.dm_order
+        where orderNo = #{orderNo}
+    </select>
+
+</mapper>

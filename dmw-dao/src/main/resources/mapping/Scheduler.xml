@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.SchedulerMapper">
+    <update id="ModifySchedulerSeat">
+        update dm_scheduler_seat
+        <set>
+            <if test="x > 0 and x != ''">
+                x = #{x},
+            </if>
+            <if test="y > 0 and y != ''">
+                y = #{y},
+            </if>
+            <if test="areaLevel > 0 and areaLevel != ''">
+                areaLevel = #{areaLevel},
+            </if>
+            <if test="scheduleId > 0 and scheduleId != ''">
+                scheduleId = #{scheduleId},
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                orderNo = #{orderNo},
+            </if>
+            <if test="userId > 0 and userId != ''">
+                userId = #{userId},
+            </if>
+            <if test="status > 0 and status != ''">
+                status = #{status},
+            </if>
+        </set>
+        where scheduleId = #{scheduleId} and x = #{x} and y = #{y}
+    </update>
+
+    <select id="querySchedulerVo" resultType="com.szxs.vo.DmSchedulerVo">
+        select id,title,startTime,endTime,itemId,cinemaId
+        from dm_scheduler.dm_scheduler
+        <where>
+            <if test="itemId != null and itemId > 0">
+                and itemId = #{itemId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryPrice" resultType="com.szxs.vo.SchedulerSeatPriceVo">
+        select id,seatNum,price,scheduleId
+        from dm_scheduler.dm_scheduler_seat_price
+        <where>
+            <if test="scheduleId != null and scheduleId > 0">
+                and scheduleId = #{scheduleId}
+            </if>
+        </where>
+    </select>
+
+    <select id="querySeatArray" resultType="DmScheduler">
+        select cinemaId,id
+        from dm_scheduler.dm_scheduler
+        <where>
+            id = #{scheduleId}
+        </where>
+    </select>
+
+    <select id="querySeatArrayByScheduleId" resultType="DmScheduler">
+        select cinemaId,id
+        from dm_scheduler.dm_scheduler
+        <where>
+            id = #{scheduleId}
+        </where>
+    </select>
+
+    <select id="querySeatInfoListVo" resultType="com.szxs.vo.SeatInfoListVo">
+        select areaLevel,(select cinemaId from dm_scheduler s where sc.scheduleId = s.id )
+            cinemaId,id,sort,status,x,y from dm_scheduler.dm_scheduler_seat sc
+        <where>
+            <if test="scheduleId != null and scheduleId > 0">
+               and scheduleId = #{scheduleId}
+            </if>
+        </where>
+    </select>
+
+    <select id="querySeatPriceListVo" resultType="com.szxs.vo.SeatPriceListVo">
+        select id,areaLevel,price,scheduleId
+        from dm_scheduler.dm_scheduler_seat_price
+        <where>
+            <if test="scheduleId != '' and scheduleId > 0">
+                and scheduleId = #{scheduleId}
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="querySchedulerSeatByOrder" resultType="com.szxs.entity.DmSchedulerSeat">
+        select id,x,y,areaLevel,scheduleId,orderNo,userId,status,sort,createdTime,updatedTime
+        from dm_scheduler_seat
+        where scheduleId = #{scheduleId} and x = #{x} and y = #{y}
+        <!--        <where>-->
+        <!--            <if test="scheduleId > 0">-->
+        <!--                and scheduleId = #{scheduleId}-->
+        <!--            </if>-->
+        <!--            <if test="x > 0">-->
+        <!--                and x = #{x}-->
+        <!--            </if>-->
+        <!--            <if test="y > 0">-->
+        <!--                and y = #{y}-->
+        <!--            </if>-->
+        <!--        </where>-->
+    </select>
+    <select id="querySchedulerPriceBySchedulerIdAndArea" resultType="com.szxs.entity.DmSchedulerSeatPrice">
+        select id,price,areaLevel,scheduleId,seatNum,createdTime,updatedTime
+        from dm_scheduler_seat_price
+        <where>
+            <if test="areaLevel > 0">
+                and areaLevel = #{areaLevel}
+            </if>
+            <if test="scheduleId > 0">
+                and scheduleId = #{scheduleId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,24 @@
+server:
+  port: 7102
+spring:
+  application:
+    name: dmw-user-provider
+  datasource:
+    url: jdbc:mysql://localhost:3306/dm_user?serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 111111
+  redis:
+    host: localhost
+    port: 6379
+    database: 15
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+mybatis:
+  type-aliases-package: com.szxs.entity
+  mapper-locations: classpath:mapping/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

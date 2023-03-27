@@ -1,0 +1,19 @@
+server:
+  port: 7157
+
+spring:
+  application:
+    name: dmw-search-consumer
+  redis:
+    host: localhost
+    port: 6379
+    database: 3
+  elasticsearch:
+    rest:
+      uris: http://192.168.6.150:9200
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+

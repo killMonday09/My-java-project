@@ -1,0 +1,56 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: dmw-gateway-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: dmw-item-consumer
+          uri: lb://dmw-item-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/item/** #匹配的路径
+          filters:
+            - RewritePath=/item(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-user-consumer
+          uri: lb://dmw-user-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/user/** #匹配的路径
+          filters:
+            - RewritePath=/user(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-search-consumer
+          uri: lb://dmw-search-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/search/** #匹配的路径
+          filters:
+            - RewritePath=/search(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-scheduler-consumer
+          uri: lb://dmw-scheduler-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/scheduler/** #匹配的路径
+          filters:
+            - RewritePath=/scheduler(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-base-consumer
+          uri: lb://dmw-base-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/base/** #匹配的路径
+          filters:
+            - RewritePath=/base(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-order-consumer
+          uri: lb://dmw-order-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/order/** #匹配的路径
+          filters:
+            - RewritePath=/order(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+        - id: dmw-pay-consumer
+          uri: lb://dmw-pay-consumer #要跳转的客户端名称
+          predicates:
+            - Path=/pay/** #匹配的路径
+          filters:
+            - RewritePath=/pay(?<segment>/?.*),$\{segment} #启动的路径替换成如表达式
+
+  main:
+    web-application-type: reactive

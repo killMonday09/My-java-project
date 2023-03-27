@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.ItemTypeMapper">
+
+    <select id="queryItemTypeList" resultType="com.szxs.entity.DmItemType">
+        select id,itemType,level,parent,aliasName
+        from dm_item.dm_item_type
+        <where>
+            <if test="level >0">
+                and level = #{level}
+            </if>
+            <if test="parent >0">
+                and parent = #{parent}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryFloorList" resultType="com.szxs.vo.FloorVo">
+        select id as floor,`key` as itemTypeId,aliasName as itemTypeName,parent
+        from dm_item.dm_item_type
+        <where>
+            <if test="floor > 0">
+                and floor = #{id}
+            </if>
+            <if test="itemTypeId != null">
+                and itemTypeId = #{`key`}
+            </if>
+            <if test="itemTypeName != null">
+                and itemTypeName = #{aliasName}
+            </if>
+            and parent = 0
+        </where>
+    </select>
+
+
+    <select id="queryFloorItemList" resultType="com.szxs.entity.DmItem">
+        select i.id,itemName,minPrice,startTime,endTime,
+        (select address from dm_item.dm_cinema c where i.cinemaId=c.id) as address,
+        (select areaId from dm_item.dm_cinema c where i.cinemaId=c.id) as areaId,
+        (select areaName from dm_item.dm_cinema c where i.cinemaId=c.id) as areaName
+        from dm_item.dm_item i
+        <where>
+            <if test="itemType1Id > 0">
+                and itemType1Id = #{itemType1Id}
+            </if>
+            <if test="isBanner > 0">
+                and isBanner = 1
+            </if>
+            <if test="ageGroup > 0">
+                and ageGroup = #{ageGroup}
+            </if>
+            <if test="isRecommend > 0">
+                and isRecommend = #{isRecommend}
+            </if>
+        </where>
+    </select>
+    <select id="queryItemType" resultType="com.szxs.vo.ItemTypeVo">
+        select id,itemType,`level`,parent,aliasName
+        from dm_item.dm_item_type
+        where parent = #{parent}
+    </select>
+</mapper>

@@ -1,0 +1,13 @@
+server:
+  port: 7152
+spring:
+  application:
+    name: dmw-user-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  redis:
+    host: localhost
+    port: 6379
+    database: 15

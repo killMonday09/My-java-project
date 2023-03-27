@@ -1,0 +1,30 @@
+server:
+  port: 7159
+
+spring:
+  application:
+    name: dmw-pay-consumer
+  redis:
+    host: localhost
+    port: 6379
+    database: 15
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+#配置日志级别
+logging:
+  level:
+    root: INFO
+    com.szxs.mapper: DEBUG
+
+alipay:
+  app_id: 2021000121665807
+  merchant_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCuaPoC+2JUCD/Oj4NGzcxZdDzTYGnZMGPUzTSg2xDAVMsbeMLXaTAo1t3gV4Y+ua3U3FiHEGCK7Z658RvGmTj6wVBZV0nmfgX6Z9Dj4xt8WCnbQxuYHKBrzKEmG+jEXOU2KguV2xVgfVYIll565KDwYOQhkAIwLDXMRXa0vWu7sip8Rg3/soxbNqJJxp8aGxg8acMpVKEQfOu6/gH/q6rYL4hCbow18U2VwkzvQ7xdCqr+lAp7o3uVOa5Hbr2RxEQLYn8TNJ8i+YTbLfyk11agqHV4w1407jo4DujO0Qz1AulHUeH5IP9cXnKuVF3c7EtSICuyX7NVVoir6TSGmyVPAgMBAAECggEBAJMSMsEQ+nmh+yxUGH88S3WjbydPxfI/u+9Wm2qJUDbfSeaAjszXBqVpivAC3lFGgi9dH8nFJaQBfDeP+bweuM269eZglRCodKITqTKB8EuKjME4daxvd1dv1vQr1LzBGQfzrJFRjVUwW7wiEMnQwWXyTm1+4ll87mCyssb2dEJxNo5RcESoiEkNnQK+zrslQk8TCl/aOzML5g6tAGRT1vGpS/1/G694MQHGuIQxFRmauYi1aZ4gg2VxtjQ0lVXCvKlGLHMLsvG65/q65H8HrbVWQF0XXU3WWGljMQW+xgCP6UwFba1fkqlrygT2woYgRfMiWgYcQnj2TT+YyT8AXgECgYEA2rG1KCgwV2i+z9c6L+xHP6xo1AfoVXAchm2xatnKYC9MlbkzZAR/kWoq64akkzmsNJLAB8Y+OwpGfjFxOZnhJt4SZV61KyQ4KIqbLnAsVq17ELA00Dm7rPPanK204fbQz1zBEi3aVNBA37CF2zWpJTKJ6c0m2IfywPAs5sv1c1kCgYEAzClmEJQ+Z2nX2Xyl2X2iDRdj/BZusKkW51QHl4Msd9h37vJs/sSyXOJA/I8eOm6ZOQlU46Mdpeg9UzCfV78meZ6M7IZu+K0pmSN/PgCU2pvZZIuryFx/AvcknEhRoD/DB0H0mjHK5AU61Z59GGJSEIog8YNuxaefo1CI01NukOcCgYBD1yClRmJImzul6dQpDZjEjc0vCQzvhAm1Qc3poYn/8GxHfd4NRr/z8gVCbtAaw6dB38wmHT8svXFEsD25apzHm9gFDi4RJfktymF9NFrswIAOmzqm5WHssvC77b7Q4enAibty0jqKWNfnDDFZ4PmJinXxyywju3h4lYi4R8jqcQKBgF2BmH1/aBV1JKc3r74tDEtyqxiKLag7yYGputBqA7PgMQ3/emw1KnvgJGOIKRAaF5NH8tlPnASgmXXAjzphEf4h3+l0qN68cJDy8RQ0r/hv6OFkFwltU77H8ryhYsFCctCgJKd6prJIsumj7Sd94Jgyq2PyDon4e+UQvZoMXFeBAoGAJUVbFqDpwBHAPsuHeA8IOpbugPeXw0yQWacGGNuc+E4+721qtUOwO8ddPkPN3SC71PuPDrPpy/5bjAGlCUaLqdWVKxbxoHKR5UVeu6PdnElLVL6XJJDzBSMf2rqbUTSQ5AnVuJKsCQexNQAsRiPxn7mVUPvRbTpn26InrejQ0Oc=
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArOw/qVjUhXAJRpeZ9PFIt9wJsiL3o+etocoTwb6l9xTNtiQGiyEWjsvNyMgocdK0VdL4LGgj4Z+G8PbCdWDtO6DQgRTgo+ApCyaTNsgEFIZ1CkchWavkVTp/X6CidTh3qf8MUg3pnO10cUVc4SYgyP50ZUAwEZz7R5PfssdyW1aBzFe7ozj71ni2G5CNfM8EStcerM2dPhNfbrJYQzonOU7oHFdhhvYTmzyRCfeCwrYIxmOrlnAxzUd3pxw7gkiwHCx3Vhcj5ZqsStyMOPbR9JlPP7kKd94rJ4h41H5vBvNDjiKHFYMq47p4q3NUApiUZC2j+mcZL6t0TtzCofQylwIDAQAB
+  notify_url: https://59622x1n74.zicp.fun/notify
+  return_url: https://59622x1n74.zicp.fun/return
+  format: json
+  sign_type: RSA2
+  charset: utf-8
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do

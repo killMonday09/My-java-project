@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szxs.mapper.ItemMapper">
+
+
+    <select id="queryItemList" resultType="com.szxs.entity.DmItem">
+        select i.id,itemName,minPrice,itemType1Id,itemType1Name,itemType2Id,itemType2Name,
+        startTime,endTime,(select address from dm_item.dm_cinema c where i.cinemaId=c.id) as address,
+        startTime,endTime,(select areaId from dm_item.dm_cinema c where i.cinemaId=c.id) as areaId,
+        startTime,endTime,(select areaName from dm_item.dm_cinema c where i.cinemaId=c.id) as areaName
+        from dm_item.dm_item i
+        <where>
+            <if test="itemType1Id > 0">
+                and itemType1Id = #{itemType1Id}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryItemListByBanner" resultType="com.szxs.entity.DmItem">
+        select id, itemName, minPrice
+        from dm_item
+        where id % 2 = 0
+    </select>
+
+    <select id="queryTodayRecommend" resultType="com.szxs.entity.DmItem">
+        select id, itemName, minPrice
+        from dm_item
+        where id % 3 = 0
+    </select>
+
+    <select id="queryItemLike" resultType="com.szxs.vo.ItemLikeVo">
+        select id,itemName,startTime as startDate,endTime as endDate,minPrice,startTime,endTime,
+               (select address from dm_item.dm_cinema c where i.cinemaId = c.id) address,
+               (select areaId from dm_item.dm_cinema c where i.cinemaId = c.id) areaId,
+               (select areaName from dm_item.dm_cinema c where i.cinemaId = c.id) areaName,
+               (select imgUrl from dm_base.dm_image m where i.cinemaId = m.id) imgUrl
+        from dm_item.dm_item i
+        <where>
+            <if test="itemType1Id > 0">
+                and itemType1Id = #{itemType1Id}
+            </if>
+            <if test="itemType2Id > 0">
+                and itemType2Id = #{itemType2Id}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryItemDetail" resultType="com.szxs.vo.ItemDetailVo">
+        select id,abstractMessage,avgScore,basicDescription,cinemaId,commentCount,startTime,endTime,itemName,itemType1Id,itemType1Name,itemType2Id,itemType2Name,latitude,longitude,projectDescription,reminderDescription,state,
+               (select areaId from dm_item.dm_cinema c where i.cinemaId = c.id) areaId,
+               (select address from dm_item.dm_cinema c where i.cinemaId = c.id) address,
+               (select areaName from dm_item.dm_cinema c where i.cinemaId = c.id) areaName,
+               (select imgUrl from dm_base.dm_image m where i.cinemaId = m.id) imgUrl
+        from dm_item.dm_item i
+        <where>
+            <if test="id > 0 and id != ''">
+                and i.id = #{id}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="queryItemComment" resultType="com.szxs.entity.DmItemComment">
+        select id,itemId,
+               userId,
+               score,
+               content,
+               createdTime,
+               (select nickName from dm_user.dm_user du where dic.userId = du.id) userName
+        from dm_item.dm_item_comment dic
+        <where>
+            <if test="itemId > 0">
+                itemId = #{itemId}
+            </if>
+        </where>
+    </select>
+    <select id="queryItemByMonth" resultType="com.szxs.vo.ItemByMonthVo">
+        select id,itemName,startTime as startDate,endTime as endDate,minPrice,
+               (select address from dm_item.dm_cinema c where i.cinemaId = c.id) address,
+               (select areaId from dm_item.dm_cinema c where i.cinemaId = c.id) areaId,
+               (select areaName from dm_item.dm_cinema c where i.cinemaId = c.id) areaName,
+               (select imgUrl from dm_base.dm_image m where i.cinemaId = m.id) imgUrl
+        from dm_item.dm_item i
+    </select>
+
+    <select id="queryItemHot" resultType="com.szxs.entity.DmItem">
+        select id,itemName,startTime as startDate,endTime as endDate,minPrice,startTime,endTime,
+               (select address from dm_item.dm_cinema c where i.cinemaId = c.id) address,
+               (select areaId from dm_item.dm_cinema c where i.cinemaId = c.id) areaId,
+               (select areaName from dm_item.dm_cinema c where i.cinemaId = c.id) areaName,
+               (select imgUrl from dm_base.dm_image m where i.cinemaId = m.id) imgUrl
+        from dm_item.dm_item i
+        <where>
+            <if test="areaId > 0">
+                and i.cinemaId = #{areaId}
+            </if>
+
+            <if test="itemTypeId > 0">
+                and itemType1Id = #{itemTypeId}
+            </if>
+
+        </where>
+    </select>
+    <select id="queryItemNameById" resultType="com.szxs.entity.DmItem">
+        select id,itemName
+        from dm_item
+        <where>
+            <if test="id > 0">
+                and id =#{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

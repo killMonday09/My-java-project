@@ -1,0 +1,16 @@
+server:
+  port: 7154
+
+spring:
+  application:
+    name: dmw-scheduler-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+#配置日志级别
+logging:
+  level:
+    root: INFO
+    com.szxs.mapper: DEBUG
